@@ -80,73 +80,75 @@ export function UserForm() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{id ? 'Edit User' : 'Create User'}</CardTitle>
-        <CardDescription>
-          {id ? 'Update user information' : 'Add a new user to the system'}
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
-          {errors.root && (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{errors.root.message}</AlertDescription>
-            </Alert>
-          )}
-          
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              {...register('name')}
-              placeholder="Enter name"
-              className={errors.name ? "border-destructive" : ""}
+    <div className="container max-w-6xl p-8">
+      <Card>
+        <CardHeader>
+          <CardTitle>{id ? 'Edit User' : 'Create User'}</CardTitle>
+          <CardDescription>
+            {id ? 'Update user information' : 'Add a new user to the system'}
+          </CardDescription>
+        </CardHeader>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            {errors.root && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{errors.root.message}</AlertDescription>
+              </Alert>
+            )}
+            
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                {...register('name')}
+                placeholder="Enter name"
+                className={errors.name ? "border-destructive" : ""}
+                disabled={isSubmitting}
+              />
+              {errors.name && (
+                <p className="text-sm text-destructive">{errors.name.message}</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                {...register('email')}
+                placeholder="Enter email"
+                className={errors.email ? "border-destructive" : ""}
+                disabled={isSubmitting}
+              />
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email.message}</p>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => navigate('/users')}
               disabled={isSubmitting}
-            />
-            {errors.name && (
-              <p className="text-sm text-destructive">{errors.name.message}</p>
-            )}
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              {...register('email')}
-              placeholder="Enter email"
-              className={errors.email ? "border-destructive" : ""}
-              disabled={isSubmitting}
-            />
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={() => navigate('/users')}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {id ? 'Updating...' : 'Creating...'}
-              </>
-            ) : (
-              id ? 'Update' : 'Create'
-            )}
-          </Button>
-        </CardFooter>
-      </form>
-    </Card>
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {id ? 'Updating...' : 'Creating...'}
+                </>
+              ) : (
+                id ? 'Update' : 'Create'
+              )}
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
   );
 }

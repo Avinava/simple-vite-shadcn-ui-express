@@ -54,7 +54,7 @@ function Home() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="gap-2">
-              <a href="https://github.com/yourusername/simple-vite-shadcnui-express" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Avinava/simple-vite-shadcn-ui-express" target="_blank" rel="noopener noreferrer">
                 <Github className="h-4 w-4" />
                 View on GitHub
               </a>

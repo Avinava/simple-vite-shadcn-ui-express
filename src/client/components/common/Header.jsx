@@ -30,7 +30,7 @@ export function Header() {
           <ThemeToggle />
           <Button variant="outline" size="icon" asChild>
             <a 
-              href="https://github.com/yourusername/simple-vite-shadcnui-express" 
+              href="https://github.com/Avinava/simple-vite-shadcn-ui-express" 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-foreground"

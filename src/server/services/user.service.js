@@ -1,28 +1,50 @@
 const prisma = require('../lib/prisma');
-const { successResponse, errorResponse } = require('../utils/response');
+const { handlePrismaError } = require('../utils/prisma-errors');
 
 class UserService {
   async create(data) {
-    return prisma.user.create({ data });
+    try {
+      return await prisma.user.create({ data });
+    } catch (error) {
+      throw new Error(handlePrismaError(error));
+    }
   }
 
   async findAll() {
-    return prisma.user.findMany();
+    try {
+      return await prisma.user.findMany();
+    } catch (error) {
+      throw new Error(handlePrismaError(error));
+    }
   }
 
   async findById(id) {
-    return prisma.user.findUnique({ where: { id } });
+    try {
+      const user = await prisma.user.findUnique({ where: { id } });
+      if (!user) throw new Error('User not found');
+      return user;
+    } catch (error) {
+      throw new Error(handlePrismaError(error));
+    }
   }
 
   async update(id, data) {
-    return prisma.user.update({
-      where: { id },
-      data
-    });
+    try {
+      return await prisma.user.update({
+        where: { id },
+        data
+      });
+    } catch (error) {
+      throw new Error(handlePrismaError(error));
+    }
   }
 
   async delete(id) {
-    return prisma.user.delete({ where: { id } });
+    try {
+      return await prisma.user.delete({ where: { id } });
+    } catch (error) {
+      throw new Error(handlePrismaError(error));
+    }
   }
 }
 

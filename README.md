@@ -198,12 +198,12 @@ This template comes with shadcn/ui pre-configured. To add new components:
 
 ```bash
 # Install the shadcn/ui CLI if you haven't already
-npm install -g @shadcn/ui
+npm install -g @shadcn
 
 # Add new components (from project root)
-npx shadcn-ui add button
-npx shadcn-ui add card
-npx shadcn-ui add dialog
+npx shadcn add button
+npx shadcn add card
+npx shadcn add dialog
 ```
 
 ### Currently Included Components

@@ -16,4 +16,4 @@ const handlePrismaError = (error) => {
   return error.message || 'An unexpected error occurred';
 };
 
-module.exports = { handlePrismaError };
+export { handlePrismaError };

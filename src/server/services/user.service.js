@@ -1,5 +1,5 @@
-const prisma = require('../lib/prisma');
-const { handlePrismaError } = require('../utils/prisma-errors');
+import prisma from '../lib/prisma.js';
+import { handlePrismaError } from '../utils/prisma-errors.js';
 
 class UserService {
   async create(data) {
@@ -48,4 +48,4 @@ class UserService {
   }
 }
 
-module.exports = new UserService();
+export default new UserService();

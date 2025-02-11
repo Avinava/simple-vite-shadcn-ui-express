@@ -1,6 +1,6 @@
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const { errorResponse } = require('../utils/response');
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { errorResponse } from '../utils/response.js';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -21,7 +21,7 @@ const notFoundHandler = (req, res) => {
   res.status(404).json(errorResponse('Resource not found'));
 };
 
-module.exports = {
+export {
   securityMiddleware,
   errorHandler,
   notFoundHandler

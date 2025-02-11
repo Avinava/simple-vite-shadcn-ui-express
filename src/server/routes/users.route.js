@@ -1,7 +1,7 @@
-const express = require('express');
-const { body, validationResult } = require('express-validator');
-const userService = require('../services/user.service');
-const { successResponse, errorResponse } = require('../utils/response');
+import express from 'express';
+import { body, validationResult } from 'express-validator';
+import userService from '../services/user.service.js';
+import { successResponse, errorResponse } from '../utils/response.js';
 
 const router = express.Router();
 
@@ -67,4 +67,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,6 +1,12 @@
-const { config } = require('dotenv');
-const path = require('path');
-const express = require('express');
+import { config } from 'dotenv';
+import path from 'path';
+import express from 'express';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Configure environment variables first, before any other code
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
@@ -9,9 +15,8 @@ config({
   override: true // Ensure variables are overridden if they exist in process.env
 });
 
-const cors = require('cors');
-const { securityMiddleware, errorHandler, notFoundHandler } = require('./middleware');
-const userRoutes = require('./routes/users.route');
+import { securityMiddleware, errorHandler, notFoundHandler } from './middleware/index.js';
+import userRoutes from './routes/users.route.js';
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '3000', 10);

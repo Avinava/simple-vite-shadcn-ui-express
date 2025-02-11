@@ -168,6 +168,7 @@ src/
 │   ├── components/      # React components
 │   │   └── ui/         # shadcn/ui components
 │   ├── lib/            # Utility functions
+│   ├── pages/          # React pages
 │   └── globals.css     # Global styles and Tailwind directives
 └── server/             # Backend Express application
     ├── lib/            # Server libraries

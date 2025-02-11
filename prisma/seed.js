@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
@@ -9,24 +9,24 @@ async function main() {
   const users = await Promise.all([
     prisma.user.create({
       data: {
-        email: 'john@example.com',
-        name: 'John Doe'
-      }
+        email: "john@example.com",
+        name: "John Doe",
+      },
     }),
     prisma.user.create({
       data: {
-        email: 'jane@example.com',
-        name: 'Jane Smith'
-      }
-    })
+        email: "jane@example.com",
+        name: "Jane Smith",
+      },
+    }),
   ]);
 
-  console.log('Seeded database with users:', users);
+  console.log("Seeded database with users:", users);
 }
 
 main()
   .catch((e) => {
-    console.error('Error seeding database:', e);
+    console.error("Error seeding database:", e);
     process.exit(1);
   })
   .finally(async () => {

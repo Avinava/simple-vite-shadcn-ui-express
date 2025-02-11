@@ -1,43 +1,49 @@
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { userService } from '@/lib/api';
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { userService } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { AlertCircle, Loader2 } from "lucide-react";
 
 const userSchema = z.object({
-  name: z.string()
-    .min(1, 'Name is required')
-    .max(100, 'Name must be less than 100 characters'),
-  email: z.string()
-    .min(1, 'Email is required')
-    .email('Invalid email address')
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(100, "Name must be less than 100 characters"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
 });
 
 export function UserForm() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { id } = useParams();
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    setError
+    setError,
   } = useForm({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      name: '',
-      email: ''
-    }
+      name: "",
+      email: "",
+    },
   });
 
   useEffect(() => {
@@ -53,8 +59,8 @@ export function UserForm() {
         reset(response.data);
       }
     } catch (error) {
-      setError('root', {
-        message: error.message || 'Failed to load user'
+      setError("root", {
+        message: error.message || "Failed to load user",
       });
     }
   };
@@ -64,17 +70,19 @@ export function UserForm() {
       const response = id
         ? await userService.updateUser(id, data)
         : await userService.createUser(data);
-      
+
       if (response.success) {
         toast({
           title: "Success",
-          description: id ? "User updated successfully" : "User created successfully",
+          description: id
+            ? "User updated successfully"
+            : "User created successfully",
         });
-        navigate('/users');
+        navigate("/users");
       }
     } catch (error) {
-      setError('root', {
-        message: error.message || 'Failed to save user'
+      setError("root", {
+        message: error.message || "Failed to save user",
       });
     }
   };
@@ -83,9 +91,9 @@ export function UserForm() {
     <div className="container max-w-6xl p-8">
       <Card>
         <CardHeader>
-          <CardTitle>{id ? 'Edit User' : 'Create User'}</CardTitle>
+          <CardTitle>{id ? "Edit User" : "Create User"}</CardTitle>
           <CardDescription>
-            {id ? 'Update user information' : 'Add a new user to the system'}
+            {id ? "Update user information" : "Add a new user to the system"}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,41 +105,45 @@ export function UserForm() {
                 <AlertDescription>{errors.root.message}</AlertDescription>
               </Alert>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                {...register('name')}
+                {...register("name")}
                 placeholder="Enter name"
                 className={errors.name ? "border-destructive" : ""}
                 disabled={isSubmitting}
               />
               {errors.name && (
-                <p className="text-sm text-destructive">{errors.name.message}</p>
+                <p className="text-sm text-destructive">
+                  {errors.name.message}
+                </p>
               )}
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                {...register('email')}
+                {...register("email")}
                 placeholder="Enter email"
                 className={errors.email ? "border-destructive" : ""}
                 disabled={isSubmitting}
               />
               {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+                <p className="text-sm text-destructive">
+                  {errors.email.message}
+                </p>
               )}
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => navigate('/users')}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate("/users")}
               disabled={isSubmitting}
             >
               Cancel
@@ -140,10 +152,12 @@ export function UserForm() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {id ? 'Updating...' : 'Creating...'}
+                  {id ? "Updating..." : "Creating..."}
                 </>
+              ) : id ? (
+                "Update"
               ) : (
-                id ? 'Update' : 'Create'
+                "Create"
               )}
             </Button>
           </CardFooter>

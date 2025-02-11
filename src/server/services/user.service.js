@@ -1,5 +1,5 @@
-import prisma from '../lib/prisma.js';
-import { handlePrismaError } from '../utils/prisma-errors.js';
+import prisma from "../lib/prisma.js";
+import { handlePrismaError } from "../utils/prisma-errors.js";
 
 class UserService {
   async create(data) {
@@ -21,7 +21,7 @@ class UserService {
   async findById(id) {
     try {
       const user = await prisma.user.findUnique({ where: { id } });
-      if (!user) throw new Error('User not found');
+      if (!user) throw new Error("User not found");
       return user;
     } catch (error) {
       throw new Error(handlePrismaError(error));
@@ -32,7 +32,7 @@ class UserService {
     try {
       return await prisma.user.update({
         where: { id },
-        data
+        data,
       });
     } catch (error) {
       throw new Error(handlePrismaError(error));

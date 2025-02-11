@@ -1,13 +1,28 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import { Badge } from "./components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card"
-import { UserList } from "./pages/UserList"
-import { UserForm } from "./pages/UserForm"
-import { Toaster } from "./components/ui/toaster"
-import { Header } from "./components/common/Header"
-import { ArrowRight, Users, UserPlus, RefreshCcw, Shield, Database, Zap, Github } from "lucide-react"
-import { Button } from "./components/ui/button"
-import { Link } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Badge } from "./components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./components/ui/card";
+import { UserList } from "./pages/UserList";
+import { UserForm } from "./pages/UserForm";
+import { Toaster } from "./components/ui/toaster";
+import { Header } from "./components/common/Header";
+import {
+  ArrowRight,
+  Users,
+  UserPlus,
+  RefreshCcw,
+  Shield,
+  Database,
+  Zap,
+  Github,
+} from "lucide-react";
+import { Button } from "./components/ui/button";
+import { Link } from "react-router-dom";
 
 function App() {
   return (
@@ -25,7 +40,7 @@ function App() {
         <Toaster />
       </div>
     </Router>
-  )
+  );
 }
 
 function Home() {
@@ -39,12 +54,15 @@ function Home() {
           </Badge>
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
             <span className="text-muted-foreground">Simple</span>{" "}
-            <span className="text-primary">vite</span> <span className="text-muted-foreground">/</span>{" "}
-            <span className="text-primary">shadcn/ui</span> <span className="text-muted-foreground">/</span>{" "}
+            <span className="text-primary">vite</span>{" "}
+            <span className="text-muted-foreground">/</span>{" "}
+            <span className="text-primary">shadcn/ui</span>{" "}
+            <span className="text-muted-foreground">/</span>{" "}
             <span className="text-primary">express</span>
           </h1>
           <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-xl/relaxed">
-            A modern full-stack starter template with beautiful UI components and robust backend
+            A modern full-stack starter template with beautiful UI components
+            and robust backend
           </p>
           <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center pt-4">
             <Button asChild size="lg" className="gap-2">
@@ -54,7 +72,11 @@ function Home() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="gap-2">
-              <a href="https://github.com/Avinava/simple-vite-shadcn-ui-express" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://github.com/Avinava/simple-vite-shadcn-ui-express"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Github className="h-4 w-4" />
                 View on GitHub
               </a>
@@ -77,11 +99,14 @@ function Home() {
             <CardContent>
               <div className="flex flex-col space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Fully functional user management system with validation and error handling
+                  Fully functional user management system with validation and
+                  error handling
                 </p>
                 <div className="flex items-center space-x-2 text-sm">
                   <ArrowRight className="h-4 w-4" />
-                  <span className="text-foreground">Interactive data table</span>
+                  <span className="text-foreground">
+                    Interactive data table
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -98,11 +123,14 @@ function Home() {
             <CardContent>
               <div className="flex flex-col space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Includes Helmet security, rate limiting, and CORS configuration
+                  Includes Helmet security, rate limiting, and CORS
+                  configuration
                 </p>
                 <div className="flex items-center space-x-2 text-sm">
                   <ArrowRight className="h-4 w-4" />
-                  <span className="text-foreground">Production-ready setup</span>
+                  <span className="text-foreground">
+                    Production-ready setup
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -123,7 +151,9 @@ function Home() {
                 </p>
                 <div className="flex items-center space-x-2 text-sm">
                   <ArrowRight className="h-4 w-4" />
-                  <span className="text-foreground">PostgreSQL integration</span>
+                  <span className="text-foreground">
+                    PostgreSQL integration
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -144,7 +174,9 @@ function Home() {
                 </p>
                 <div className="flex items-center space-x-2 text-sm">
                   <ArrowRight className="h-4 w-4" />
-                  <span className="text-foreground">Optimized production build</span>
+                  <span className="text-foreground">
+                    Optimized production build
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -161,7 +193,8 @@ function Home() {
             <CardContent>
               <div className="flex flex-col space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Accessible and customizable components built with Radix UI and Tailwind
+                  Accessible and customizable components built with Radix UI and
+                  Tailwind
                 </p>
                 <div className="flex items-center space-x-2 text-sm">
                   <ArrowRight className="h-4 w-4" />
@@ -186,7 +219,9 @@ function Home() {
                 </p>
                 <div className="flex items-center space-x-2 text-sm">
                   <ArrowRight className="h-4 w-4" />
-                  <span className="text-foreground">Development proxy setup</span>
+                  <span className="text-foreground">
+                    Development proxy setup
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -194,7 +229,7 @@ function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

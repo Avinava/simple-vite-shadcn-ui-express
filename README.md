@@ -29,7 +29,7 @@ A modern full-stack template using Vite, React, shadcn/ui components, and Expres
 
 ```bash
 # Clone the template
-git clone https://github.com/yourusername/simple-vite-shadcn-ui-express.git my-project
+git clone https://github.com/Avinava/simple-vite-react-express.git my-project
 cd my-project
 
 # Install dependencies

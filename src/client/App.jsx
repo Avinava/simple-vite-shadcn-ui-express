@@ -5,7 +5,9 @@ import { UserList } from "./components/UserList"
 import { UserForm } from "./components/UserForm"
 import { Toaster } from "./components/ui/toaster"
 import { Header } from "./components/Header"
-import { ArrowRight, Users, UserPlus, RefreshCcw, Shield, Database, Zap } from "lucide-react"
+import { ArrowRight, Users, UserPlus, RefreshCcw, Shield, Database, Zap, Github } from "lucide-react"
+import { Button } from "./components/ui/button"
+import { Link } from "react-router-dom"
 
 function App() {
   return (
@@ -41,6 +43,20 @@ function Home() {
           <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-xl/relaxed">
             A powerful starting point featuring Express.js backend and shadcn/ui components
           </p>
+          <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center pt-4">
+            <Button asChild size="lg" className="gap-2">
+              <Link to="/users">
+                Try Demo
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="gap-2">
+              <a href="https://github.com/Avinava/simple-vite-react-express" target="_blank" rel="noopener noreferrer">
+                <Github className="h-4 w-4" />
+                View on GitHub
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
 

@@ -8,12 +8,12 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { RotateCw, AlertCircle, Users, UserPlus, UserMinus, Calendar } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 // Chart configuration
 const chartConfig = {
   users: {
-    label: "Users",
+    label: "New Registrations",
     theme: {
       light: "hsl(var(--chart-1))",
       dark: "hsl(var(--chart-1))"
@@ -213,14 +213,19 @@ export function UserList() {
                   <CardTitle>User Growth</CardTitle>
                   <CardDescription>Monthly user registration trends</CardDescription>
                 </CardHeader>
-                <CardContent className="pt-4">
-                  <div className="aspect-[4/3] sm:aspect-[16/9] h-auto w-full">
+                <CardContent>
+                  <div className="h-[350px] w-full">
                     <ChartContainer config={chartConfig}>
-                      <ResponsiveContainer width="100%" height="100%">
+                      <ResponsiveContainer>
                         <BarChart 
                           data={chartData}
-                          margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                          margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
                         >
+                          <CartesianGrid 
+                            strokeDasharray="3 3" 
+                            vertical={false} 
+                            className="stroke-muted" 
+                          />
                           <XAxis 
                             dataKey="month"
                             stroke="#888888"
@@ -234,6 +239,7 @@ export function UserList() {
                             tickLine={false}
                             axisLine={false}
                             tickFormatter={(value) => `${value}`}
+                            className="text-xs"
                           />
                           <Bar
                             dataKey="users"
@@ -242,7 +248,10 @@ export function UserList() {
                             className="fill-primary"
                           />
                           <ChartTooltip>
-                            <ChartTooltipContent />
+                            <ChartTooltipContent 
+                              labelFormatter={(label) => `${label} 2024`}
+                              formatter={(value) => [`${value} users`, "New Registrations"]}
+                            />
                           </ChartTooltip>
                         </BarChart>
                       </ResponsiveContainer>

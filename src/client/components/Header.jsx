@@ -9,7 +9,12 @@ export function Header() {
       <div className="container flex h-16 items-center px-4 max-w-6xl">
         <Link to="/" className="flex items-center space-x-2">
           <Home className="h-6 w-6" />
-          <span className="font-bold hidden sm:inline-block">Simple Vite Express</span>
+          <span className="font-bold hidden sm:inline-block">
+            <span className="text-muted-foreground">Simple</span>{" "}
+            <span className="text-primary">vite</span> <span className="text-muted-foreground">/</span>{" "}
+            <span className="text-primary">shadcn/ui</span> <span className="text-muted-foreground">/</span>{" "}
+            <span className="text-primary">express</span>
+          </span>
         </Link>
         
         <nav className="flex items-center ml-6 space-x-4 lg:space-x-6">
@@ -25,7 +30,7 @@ export function Header() {
           <ThemeToggle />
           <Button variant="outline" size="icon" asChild>
             <a 
-              href="https://github.com/Avinava/simple-vite-react-express" 
+              href="https://github.com/yourusername/simple-vite-shadcnui-express" 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-foreground"

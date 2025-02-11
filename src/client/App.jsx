@@ -35,13 +35,16 @@ function Home() {
       <section className="container space-y-8 max-w-6xl px-4 pt-4 md:pt-8 lg:pt-12">
         <div className="flex flex-col items-center text-center space-y-4">
           <Badge variant="secondary" className="h-8 items-center px-4">
-            <span>Built with Vite + React + Express</span>
+            <span>Full-Stack Template</span>
           </Badge>
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Modern Full Stack Template
+            <span className="text-muted-foreground">Simple</span>{" "}
+            <span className="text-primary">vite</span> <span className="text-muted-foreground">/</span>{" "}
+            <span className="text-primary">shadcn/ui</span> <span className="text-muted-foreground">/</span>{" "}
+            <span className="text-primary">express</span>
           </h1>
           <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-xl/relaxed">
-            A powerful starting point featuring Express.js backend and shadcn/ui components
+            A modern full-stack starter template with beautiful UI components and robust backend
           </p>
           <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center pt-4">
             <Button asChild size="lg" className="gap-2">
@@ -51,7 +54,7 @@ function Home() {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="gap-2">
-              <a href="https://github.com/Avinava/simple-vite-react-express" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/yourusername/simple-vite-shadcnui-express" target="_blank" rel="noopener noreferrer">
                 <Github className="h-4 w-4" />
                 View on GitHub
               </a>
@@ -151,7 +154,7 @@ function Home() {
             <CardHeader className="space-y-1">
               <div className="flex items-center space-x-2">
                 <UserPlus className="h-4 w-4 text-primary" />
-                <CardTitle>Shadcn Components</CardTitle>
+                <CardTitle>shadcn/ui Components</CardTitle>
               </div>
               <CardDescription>Beautiful UI components</CardDescription>
             </CardHeader>

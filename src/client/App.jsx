@@ -1,37 +1,18 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
-import { Button } from "./components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs"
-import { Progress } from "./components/ui/progress"
-import { Separator } from "./components/ui/separator"
-import { Github } from "lucide-react"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { Badge } from "./components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card"
 import { UserList } from "./components/UserList"
 import { UserForm } from "./components/UserForm"
 import { Toaster } from "./components/ui/toaster"
-import { ThemeToggle } from "./components/ThemeToggle"
+import { Header } from "./components/Header"
+import { ArrowRight, Users, UserPlus, RefreshCcw, Shield, Database, Zap } from "lucide-react"
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-background">
-        <nav className="border-b">
-          <div className="container flex h-16 items-center px-4 max-w-6xl">
-            <Link to="/" className="font-bold">Simple Vite Express</Link>
-            <div className="ml-auto flex items-center space-x-4">
-              <Button asChild variant="ghost">
-                <Link to="/users">Users</Link>
-              </Button>
-              <ThemeToggle />
-              <Button variant="outline" size="icon">
-                <a href="https://github.com/yourusername/simple-vite-shadcn-ui-express" target="_blank" rel="noopener">
-                  <Github className="h-4 w-4" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </nav>
-        
-        <main className="container max-w-6xl p-8">
+      <div className="min-h-screen flex flex-col bg-background">
+        <Header />
+        <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/users" element={<UserList />} />
@@ -47,67 +28,153 @@ function App() {
 
 function Home() {
   return (
-    <div className="flex flex-col gap-8">
-      <Card className="border-2">
-        <CardHeader>
-          <CardTitle className="text-4xl">
-            User Management Demo
-          </CardTitle>
-          <CardDescription>
-            A demonstration of full-stack features with Express.js backend and shadcn/ui components
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          <p className="text-muted-foreground">
-            This demo showcases a complete user management system with CRUD operations
+    <div className="flex-1 space-y-12 py-8">
+      {/* Hero Section */}
+      <section className="container space-y-8 max-w-6xl px-4 pt-4 md:pt-8 lg:pt-12">
+        <div className="flex flex-col items-center text-center space-y-4">
+          <Badge variant="secondary" className="h-8 items-center px-4">
+            <span>Built with Vite + React + Express</span>
+          </Badge>
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+            Modern Full Stack Template
+          </h1>
+          <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-xl/relaxed">
+            A powerful starting point featuring Express.js backend and shadcn/ui components
           </p>
-          <div className="flex flex-col gap-2 md:flex-row">
-            <Button asChild>
-              <Link to="/users">View Users</Link>
-            </Button>
-            <Button asChild variant="outline" className="gap-2">
-              <Link to="/users/new">Create User</Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <FeatureCard
-          title="User List"
-          description="View and manage users"
-          content="Interactive table with sort and filter capabilities"
-          action={<Link to="/users">View Users</Link>}
-        />
-        <FeatureCard
-          title="Create Users"
-          description="Add new users"
-          content="Form with validation and error handling"
-          action={<Link to="/users/new">Add User</Link>}
-        />
-        <FeatureCard
-          title="Edit & Delete"
-          description="Modify user data"
-          content="Full CRUD operations with immediate updates"
-          action={<Link to="/users">Manage Users</Link>}
-        />
-      </div>
+      {/* Features Grid */}
+      <section className="container max-w-6xl px-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="transition-all hover:shadow-lg">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <Users className="h-4 w-4 text-primary" />
+                <CardTitle>User Management</CardTitle>
+              </div>
+              <CardDescription>Complete CRUD operations</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Fully functional user management system with validation and error handling
+                </p>
+                <div className="flex items-center space-x-2 text-sm">
+                  <ArrowRight className="h-4 w-4" />
+                  <span className="text-foreground">Interactive data table</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="transition-all hover:shadow-lg">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <Shield className="h-4 w-4 text-primary" />
+                <CardTitle>Modern Security</CardTitle>
+              </div>
+              <CardDescription>Built-in protection</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Includes Helmet security, rate limiting, and CORS configuration
+                </p>
+                <div className="flex items-center space-x-2 text-sm">
+                  <ArrowRight className="h-4 w-4" />
+                  <span className="text-foreground">Production-ready setup</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="transition-all hover:shadow-lg">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <Database className="h-4 w-4 text-primary" />
+                <CardTitle>Prisma ORM</CardTitle>
+              </div>
+              <CardDescription>Type-safe database access</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Modern database toolkit with migrations and seeding support
+                </p>
+                <div className="flex items-center space-x-2 text-sm">
+                  <ArrowRight className="h-4 w-4" />
+                  <span className="text-foreground">PostgreSQL integration</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="transition-all hover:shadow-lg">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <Zap className="h-4 w-4 text-primary" />
+                <CardTitle>Fast Development</CardTitle>
+              </div>
+              <CardDescription>Lightning-fast HMR</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Vite-powered development with instant hot module replacement
+                </p>
+                <div className="flex items-center space-x-2 text-sm">
+                  <ArrowRight className="h-4 w-4" />
+                  <span className="text-foreground">Optimized production build</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="transition-all hover:shadow-lg">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <UserPlus className="h-4 w-4 text-primary" />
+                <CardTitle>Shadcn Components</CardTitle>
+              </div>
+              <CardDescription>Beautiful UI components</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Accessible and customizable components built with Radix UI and Tailwind
+                </p>
+                <div className="flex items-center space-x-2 text-sm">
+                  <ArrowRight className="h-4 w-4" />
+                  <span className="text-foreground">Dark mode support</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="transition-all hover:shadow-lg">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <RefreshCcw className="h-4 w-4 text-primary" />
+                <CardTitle>API Integration</CardTitle>
+              </div>
+              <CardDescription>Seamless communication</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Pre-configured API client with automatic error handling
+                </p>
+                <div className="flex items-center space-x-2 text-sm">
+                  <ArrowRight className="h-4 w-4" />
+                  <span className="text-foreground">Development proxy setup</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     </div>
-  )
-}
-
-function FeatureCard({ title, description, content, action }) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>{content}</CardContent>
-      <div className="p-6 pt-0">
-        <Button variant="ghost" asChild>{action}</Button>
-      </div>
-    </Card>
   )
 }
 

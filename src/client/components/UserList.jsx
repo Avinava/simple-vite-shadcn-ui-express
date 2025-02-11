@@ -7,6 +7,16 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { RotateCw, AlertCircle, Users, UserPlus, UserMinus, Calendar } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, CartesianGrid } from 'recharts';
 
@@ -26,6 +36,7 @@ export function UserList() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("list");
+  const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, userId: null });
 
   useEffect(() => {
     loadUsers();
@@ -46,16 +57,26 @@ export function UserList() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDeleteClick = (userId) => {
+    setDeleteDialog({ isOpen: true, userId });
+  };
+
+  const handleDeleteConfirm = async () => {
     try {
       setError(null);
-      const response = await userService.deleteUser(id);
+      const response = await userService.deleteUser(deleteDialog.userId);
       if (response.success) {
         await loadUsers();
       }
     } catch (error) {
       setError(error.message || 'Failed to delete user');
+    } finally {
+      setDeleteDialog({ isOpen: false, userId: null });
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialog({ isOpen: false, userId: null });
   };
 
   // Prepare data for charts
@@ -194,7 +215,7 @@ export function UserList() {
                             <Button 
                               variant="destructive" 
                               size="sm"
-                              onClick={() => handleDelete(user.id)}
+                              onClick={() => handleDeleteClick(user.id)}
                             >
                               Delete
                             </Button>
@@ -263,6 +284,23 @@ export function UserList() {
           </Tabs>
         </CardContent>
       </Card>
+
+      <AlertDialog open={deleteDialog.isOpen} onOpenChange={(isOpen) => !isOpen && handleDeleteCancel()}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the user and remove their data from the system.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleDeleteCancel}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

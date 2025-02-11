@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { userService } from '@/lib/api';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,17 +12,33 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { AlertCircle, Loader2 } from "lucide-react";
 
+const userSchema = z.object({
+  name: z.string()
+    .min(1, 'Name is required')
+    .max(100, 'Name must be less than 100 characters'),
+  email: z.string()
+    .min(1, 'Email is required')
+    .email('Invalid email address')
+});
+
 export function UserForm() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { id } = useParams();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: ''
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setError
+  } = useForm({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      name: '',
+      email: ''
+    }
   });
-  const [errors, setErrors] = useState({});
-  const [apiError, setApiError] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -29,49 +48,22 @@ export function UserForm() {
 
   const loadUser = async () => {
     try {
-      setLoading(true);
       const response = await userService.getUser(id);
       if (response.success) {
-        setFormData(response.data);
+        reset(response.data);
       }
     } catch (error) {
-      setApiError(error.message || 'Failed to load user');
-    } finally {
-      setLoading(false);
+      setError('root', {
+        message: error.message || 'Failed to load user'
+      });
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-    
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
-      newErrors.email = 'Invalid email address';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
+  const onSubmit = async (data) => {
     try {
-      setLoading(true);
-      setApiError(null);
-      
       const response = id
-        ? await userService.updateUser(id, formData)
-        : await userService.createUser(formData);
+        ? await userService.updateUser(id, data)
+        : await userService.createUser(data);
       
       if (response.success) {
         toast({
@@ -81,24 +73,9 @@ export function UserForm() {
         navigate('/users');
       }
     } catch (error) {
-      setApiError(error.message || 'Failed to save user');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Clear field-specific error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: undefined
-      }));
+      setError('root', {
+        message: error.message || 'Failed to save user'
+      });
     }
   };
 
@@ -110,13 +87,13 @@ export function UserForm() {
           {id ? 'Update user information' : 'Add a new user to the system'}
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent className="space-y-4">
-          {apiError && (
+          {errors.root && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{apiError}</AlertDescription>
+              <AlertDescription>{errors.root.message}</AlertDescription>
             </Alert>
           )}
           
@@ -124,15 +101,13 @@ export function UserForm() {
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
+              {...register('name')}
               placeholder="Enter name"
               className={errors.name ? "border-destructive" : ""}
-              disabled={loading}
+              disabled={isSubmitting}
             />
             {errors.name && (
-              <p className="text-sm text-destructive">{errors.name}</p>
+              <p className="text-sm text-destructive">{errors.name.message}</p>
             )}
           </div>
           
@@ -140,16 +115,14 @@ export function UserForm() {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              name="email"
               type="email"
-              value={formData.email}
-              onChange={handleChange}
+              {...register('email')}
               placeholder="Enter email"
               className={errors.email ? "border-destructive" : ""}
-              disabled={loading}
+              disabled={isSubmitting}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">{errors.email}</p>
+              <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
         </CardContent>
@@ -158,12 +131,12 @@ export function UserForm() {
             type="button" 
             variant="outline" 
             onClick={() => navigate('/users')}
-            disabled={loading}
+            disabled={isSubmitting}
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={loading}>
-            {loading ? (
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 {id ? 'Updating...' : 'Creating...'}

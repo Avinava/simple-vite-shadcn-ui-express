@@ -8,6 +8,7 @@ import { Github } from "lucide-react"
 import { UserList } from "./components/UserList"
 import { UserForm } from "./components/UserForm"
 import { Toaster } from "./components/ui/toaster"
+import { ThemeToggle } from "./components/ThemeToggle"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Button asChild variant="ghost">
                 <Link to="/users">Users</Link>
               </Button>
+              <ThemeToggle />
               <Button variant="outline" size="icon">
                 <a href="https://github.com/yourusername/simple-vite-shadcn-ui-express" target="_blank" rel="noopener">
                   <Github className="h-4 w-4" />

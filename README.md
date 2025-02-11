@@ -1,5 +1,7 @@
 # simple-vite-shadcn-ui-express
 
+![Landing Page](./screenshots/landing.png)
+
 A modern full-stack template using Vite, React, shadcn/ui components, and Express.js.
 
 <p align="center">
@@ -13,6 +15,19 @@ A modern full-stack template using Vite, React, shadcn/ui components, and Expres
     <img src="https://img.shields.io/badge/Nodemon-76D04B.svg?style=flat-square&logo=Nodemon&logoColor=white" alt="Nodemon">
     <img src="https://img.shields.io/badge/Radix%20UI-161618.svg?style=flat-square&logo=radix-ui&logoColor=white" alt="Radix UI">
 </p>
+
+## Screenshots
+
+<details>
+<summary>View more screenshots</summary>
+
+### User Management
+![User List](./screenshots/users.png)
+
+### User Creation
+![Add User Form](./screenshots/add-user.png)
+
+</details>
 
 ## Features
 

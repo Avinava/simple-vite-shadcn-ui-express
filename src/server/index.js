@@ -1,33 +1,71 @@
-const express = require('express');
-const cors = require('cors');
+const { config } = require('dotenv');
 const path = require('path');
+const express = require('express');
+
+// Configure environment variables first, before any other code
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+config({ 
+  path: path.join(__dirname, `../../${envFile}`),
+  override: true // Ensure variables are overridden if they exist in process.env
+});
+
+const cors = require('cors');
+const { securityMiddleware, errorHandler, notFoundHandler } = require('./middleware');
+const userRoutes = require('./routes/users.route');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 const isDev = process.env.NODE_ENV !== 'production';
 
-app.use(cors());
+// Log environment state
+console.log('Environment:', {
+  NODE_ENV: process.env.NODE_ENV,
+  PORT: PORT,
+  envFile: envFile
+});
+
+// CORS configuration
+const corsOptions = {
+  origin: isDev 
+    ? 'http://localhost:5173' // Vite dev server
+    : process.env.CLIENT_URL || true,
+  credentials: true
+};
+
+// Apply middleware
+app.use(securityMiddleware);
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// API routes
+// API Routes
+app.use('/api/users', userRoutes);
+
+// Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ 
+    status: 'ok', 
+    environment: process.env.NODE_ENV,
+    port: PORT,
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // Only serve static files and handle SPA routing in production
 if (!isDev) {
-  // Serve static files from the dist directory
   app.use(express.static(path.join(__dirname, '../../dist')));
-
-  // Handle SPA routing - always return index.html for client routes
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../../dist/index.html'));
   });
 }
 
+// Error handling
+app.use(notFoundHandler);
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
   if (isDev) {
-    console.log('Running in development mode - static file serving is disabled');
+    console.log(`API available at http://localhost:${PORT}`);
+    console.log('Client dev server will proxy API requests automatically');
   }
 });

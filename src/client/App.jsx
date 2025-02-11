@@ -1,173 +1,111 @@
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs"
 import { Progress } from "./components/ui/progress"
 import { Separator } from "./components/ui/separator"
 import { Github } from "lucide-react"
+import { UserList } from "./components/UserList"
+import { UserForm } from "./components/UserForm"
+import { Toaster } from "./components/ui/toaster"
 
 function App() {
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="container max-w-6xl">
-        <div className="flex flex-col gap-8">
-          {/* Hero Card */}
-          <Card className="border-2">
-            <CardHeader>
-              <CardTitle className="text-4xl">
-                Vite + React + shadcn/ui + Express
-              </CardTitle>
-              <CardDescription>
-                A modern full-stack starter template with shadcn-ui components
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <p className="text-muted-foreground">
-                Edit <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">src/client/App.jsx</code> to customize this template
-              </p>
-              <div className="flex flex-col gap-2 md:flex-row">
-                <Button>Get Started</Button>
-                <Button variant="outline" className="gap-2">
-                  <Github size={16} />
-                  View on GitHub
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Tech Stack Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Tech Stack</CardTitle>
-              <CardDescription>Our powerful technology foundation</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">React + Vite</span>
-                  <span className="text-sm text-muted-foreground">95%</span>
-                </div>
-                <Progress value={95} />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Shadcn UI</span>
-                  <span className="text-sm text-muted-foreground">90%</span>
-                </div>
-                <Progress value={90} />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Express.js</span>
-                  <span className="text-sm text-muted-foreground">85%</span>
-                </div>
-                <Progress value={85} />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Separator className="my-4" />
-
-          {/* Features Tabs */}
-          <Tabs defaultValue="frontend" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="frontend">Frontend</TabsTrigger>
-              <TabsTrigger value="components">Components</TabsTrigger>
-              <TabsTrigger value="backend">Backend</TabsTrigger>
-            </TabsList>
-            <TabsContent value="frontend" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Frontend Features</CardTitle>
-                  <CardDescription>Modern React development with Vite</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-4 space-y-2">
-                    <li>Lightning-fast Hot Module Replacement</li>
-                    <li>Optimized production builds</li>
-                    <li>TypeScript support out of the box</li>
-                    <li>Modern development environment</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="components" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>UI Components</CardTitle>
-                  <CardDescription>Beautiful and accessible components</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-4 space-y-2">
-                    <li>Built with Radix UI primitives</li>
-                    <li>Styled with Tailwind CSS</li>
-                    <li>Fully customizable and themeable</li>
-                    <li>Dark mode support</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="backend" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Backend Features</CardTitle>
-                  <CardDescription>Robust Express.js server setup</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-4 space-y-2">
-                    <li>RESTful API routing</li>
-                    <li>Static file serving</li>
-                    <li>Production-ready configuration</li>
-                    <li>Easy to extend and customize</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          {/* Feature Cards Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>Frontend</CardTitle>
-                <CardDescription>Modern React with Vite</CardDescription>
-              </CardHeader>
-              <CardContent>
-                Lightning-fast HMR, optimized builds, and TypeScript support out of the box.
-              </CardContent>
-              <CardFooter>
-                <Button variant="ghost">Learn more</Button>
-              </CardFooter>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>UI Components</CardTitle>
-                <CardDescription>shadcn/ui Integration</CardDescription>
-              </CardHeader>
-              <CardContent>
-                Beautiful, accessible components built with Radix UI and Tailwind CSS.
-              </CardContent>
-              <CardFooter>
-                <Button variant="ghost">View components</Button>
-              </CardFooter>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Backend</CardTitle>
-                <CardDescription>Express.js Server</CardDescription>
-              </CardHeader>
-              <CardContent>
-                Production-ready Express.js setup with API routing and static file serving.
-              </CardContent>
-              <CardFooter>
-                <Button variant="ghost">API docs</Button>
-              </CardFooter>
-            </Card>
+    <Router>
+      <div className="min-h-screen bg-background">
+        <nav className="border-b">
+          <div className="container flex h-16 items-center px-4 max-w-6xl">
+            <Link to="/" className="font-bold">Simple Vite Express</Link>
+            <div className="ml-auto flex items-center space-x-4">
+              <Button asChild variant="ghost">
+                <Link to="/users">Users</Link>
+              </Button>
+              <Button variant="outline" size="icon">
+                <a href="https://github.com/yourusername/simple-vite-shadcn-ui-express" target="_blank" rel="noopener">
+                  <Github className="h-4 w-4" />
+                </a>
+              </Button>
+            </div>
           </div>
-        </div>
+        </nav>
+        
+        <main className="container max-w-6xl p-8">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/users" element={<UserList />} />
+            <Route path="/users/new" element={<UserForm />} />
+            <Route path="/users/:id" element={<UserForm />} />
+          </Routes>
+        </main>
+        <Toaster />
+      </div>
+    </Router>
+  )
+}
+
+function Home() {
+  return (
+    <div className="flex flex-col gap-8">
+      <Card className="border-2">
+        <CardHeader>
+          <CardTitle className="text-4xl">
+            User Management Demo
+          </CardTitle>
+          <CardDescription>
+            A demonstration of full-stack features with Express.js backend and shadcn/ui components
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <p className="text-muted-foreground">
+            This demo showcases a complete user management system with CRUD operations
+          </p>
+          <div className="flex flex-col gap-2 md:flex-row">
+            <Button asChild>
+              <Link to="/users">View Users</Link>
+            </Button>
+            <Button asChild variant="outline" className="gap-2">
+              <Link to="/users/new">Create User</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <FeatureCard
+          title="User List"
+          description="View and manage users"
+          content="Interactive table with sort and filter capabilities"
+          action={<Link to="/users">View Users</Link>}
+        />
+        <FeatureCard
+          title="Create Users"
+          description="Add new users"
+          content="Form with validation and error handling"
+          action={<Link to="/users/new">Add User</Link>}
+        />
+        <FeatureCard
+          title="Edit & Delete"
+          description="Modify user data"
+          content="Full CRUD operations with immediate updates"
+          action={<Link to="/users">Manage Users</Link>}
+        />
       </div>
     </div>
+  )
+}
+
+function FeatureCard({ title, description, content, action }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>{content}</CardContent>
+      <div className="p-6 pt-0">
+        <Button variant="ghost" asChild>{action}</Button>
+      </div>
+    </Card>
   )
 }
 

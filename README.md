@@ -1,6 +1,8 @@
 # simple-vite-shadcn-ui-express
 
-![Landing Page](./screenshots/landing.png)
+<div align="center">
+  <img src="./screenshots/landing.png" alt="Landing Page" width="100%" style="border-radius: 8px;">
+</div>
 
 A modern full-stack template using Vite, React, shadcn/ui components, and Express.js.
 
@@ -19,13 +21,15 @@ A modern full-stack template using Vite, React, shadcn/ui components, and Expres
 ## Screenshots
 
 <details>
-<summary>View more screenshots</summary>
+<summary>📸 View more screenshots</summary>
 
 ### User Management
-![User List](./screenshots/users.png)
+
+<img src="./screenshots/users.png" alt="User List" width="100%" style="border-radius: 8px;">
 
 ### User Creation
-![Add User Form](./screenshots/add-user.png)
+
+<img src="./screenshots/add-user.png" alt="Add User Form" width="100%" style="border-radius: 8px;">
 
 </details>
 
@@ -80,6 +84,7 @@ CLIENT_URL=             # Allowed client origin for CORS
 ### Development Setup
 
 In development:
+
 - The client runs on port 5173 (Vite default)
 - API requests are automatically proxied to the backend
 - No need to set VITE_API_URL as proxy handles it
@@ -95,6 +100,7 @@ npm run dev
 ### Production Setup
 
 In production:
+
 - Set VITE_API_URL to your API domain
 - Configure PORT for your hosting environment
 - Set DATABASE_URL to your production database
@@ -113,16 +119,19 @@ npm start
 ### Database Setup
 
 1. Copy the environment file and update with your database credentials:
+
 ```bash
 cp .env.example .env
 ```
 
 2. Update the `DATABASE_URL` in `.env` with your PostgreSQL credentials:
+
 ```
 DATABASE_URL="postgresql://username:password@localhost:5432/your_database_name"
 ```
 
 3. Initialize the database:
+
 ```bash
 # Create and apply migrations
 npm run db:migrate
@@ -145,6 +154,7 @@ The template includes a fully functional user management API:
 - `DELETE /api/users/:id` - Delete a user
 
 Example API request:
+
 ```bash
 # Create a new user
 curl -X POST http://localhost:3000/api/users \
@@ -238,10 +248,12 @@ npx shadcn add dialog
 ### Customizing Components
 
 1. **Theme Customization**
+
    - Edit `src/client/globals.css` to modify theme variables
    - Customize the Tailwind configuration in `tailwind.config.js`
 
 2. **Component Styling**
+
    - Components are styled using Tailwind CSS
    - Modify component styles in `src/client/components/ui/`
 
@@ -269,14 +281,17 @@ npx shadcn add dialog
 ## Customizing the Template
 
 1. **Update Project Information**
+
    - Modify `package.json` with your project details
    - Update this README with your project specifics
 
 2. **Environment Setup**
+
    - Create `.env` file if needed for environment variables
    - Configure server port in `vite.config.js` and `server/index.js`
 
 3. **Adding Routes**
+
    - Express routes go in `src/server/index.js`
    - Add new API endpoints as needed
 

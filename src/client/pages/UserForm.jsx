@@ -81,7 +81,16 @@ export function UserForm() {
     try {
       const response = await userService.getUser(id);
       if (response.success) {
-        form.reset(response.data);
+        // Transform null values to empty strings for form inputs
+        const formData = {
+          ...response.data,
+          birthDate: response.data.birthDate
+            ? new Date(response.data.birthDate).toISOString().split("T")[0]
+            : "",
+          phoneNumber: response.data.phoneNumber || "",
+          bio: response.data.bio || "",
+        };
+        form.reset(formData);
       }
     } catch (error) {
       form.setError("root", {

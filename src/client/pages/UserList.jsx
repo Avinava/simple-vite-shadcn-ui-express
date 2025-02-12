@@ -52,6 +52,14 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Chart configuration
 const chartConfig = {
@@ -72,6 +80,10 @@ export function UserList() {
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
     userId: null,
+  });
+  const [filters, setFilters] = useState({
+    role: "all",
+    status: "all",
   });
 
   useEffect(() => {
@@ -137,6 +149,16 @@ export function UserList() {
       return new Date(user.createdAt) > thirtyDaysAgo;
     }).length,
   };
+
+  const filteredUsers = users.filter((user) => {
+    if (filters.role !== "all" && user.role !== filters.role) return false;
+    if (
+      filters.status !== "all" &&
+      user.isActive !== (filters.status === "active")
+    )
+      return false;
+    return true;
+  });
 
   if (loading) {
     return (
@@ -238,9 +260,47 @@ export function UserList() {
             </TabsList>
 
             <TabsContent value="list">
-              {!error && users.length === 0 ? (
+              <div className="flex gap-4 mb-4">
+                <Select
+                  value={filters.role}
+                  onValueChange={(value) =>
+                    setFilters((f) => ({ ...f, role: value }))
+                  }
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Filter by role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Roles</SelectItem>
+                    <SelectItem value="USER">User</SelectItem>
+                    <SelectItem value="ADMIN">Admin</SelectItem>
+                    <SelectItem value="EDITOR">Editor</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={filters.status}
+                  onValueChange={(value) =>
+                    setFilters((f) => ({ ...f, status: value }))
+                  }
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {!error && filteredUsers.length === 0 ? (
                 <div className="text-center py-4 text-muted-foreground">
-                  No users found. Create your first user to get started.
+                  No users found.{" "}
+                  {users.length === 0
+                    ? "Create your first user to get started."
+                    : "Try adjusting your filters."}
                 </div>
               ) : (
                 <Table>
@@ -248,15 +308,55 @@ export function UserList() {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Email</TableHead>
+                      <TableHead>Role</TableHead>
+                      <TableHead>Status</TableHead>
                       <TableHead>Created</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {users.map((user) => (
+                    {filteredUsers.map((user) => (
                       <TableRow key={user.id}>
-                        <TableCell>{user.name}</TableCell>
-                        <TableCell>{user.email}</TableCell>
+                        <TableCell>
+                          <div className="flex flex-col">
+                            <span>{user.name}</span>
+                            {user.phoneNumber && (
+                              <span className="text-sm text-muted-foreground">
+                                {user.phoneNumber}
+                              </span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col">
+                            <span>{user.email}</span>
+                            {user.notifyByEmail && (
+                              <span className="text-xs text-muted-foreground">
+                                Notifications enabled
+                              </span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              user.role === "ADMIN"
+                                ? "destructive"
+                                : user.role === "EDITOR"
+                                  ? "default"
+                                  : "secondary"
+                            }
+                          >
+                            {user.role.toLowerCase()}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={user.isActive ? "success" : "outline"}
+                          >
+                            {user.isActive ? "active" : "inactive"}
+                          </Badge>
+                        </TableCell>
                         <TableCell>
                           {new Date(user.createdAt).toLocaleDateString()}
                         </TableCell>

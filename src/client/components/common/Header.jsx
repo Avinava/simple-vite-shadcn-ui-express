@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { ThemeToggle } from "./ThemeToggle";
-import { Github, Users, Home } from "lucide-react";
+import { Github, Users, Home, Menu, LineChart, UserPlus } from "lucide-react";
 
 export function Header() {
   return (
@@ -19,10 +19,11 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center ml-6 space-x-4 lg:space-x-6">
+        <nav className="flex items-center ml-6 space-x-2 lg:space-x-4">
           <Button
             asChild
             variant="ghost"
+            size="sm"
             className="text-muted-foreground hover:text-foreground"
           >
             <Link to="/users" className="flex items-center space-x-2">
@@ -30,9 +31,36 @@ export function Header() {
               <span>Users</span>
             </Link>
           </Button>
+
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <Link to="/users/new" className="flex items-center space-x-2">
+              <UserPlus className="h-4 w-4" />
+              <span>New User</span>
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground hidden md:flex"
+          >
+            <Link
+              to="/users?tab=analytics"
+              className="flex items-center space-x-2"
+            >
+              <LineChart className="h-4 w-4" />
+              <span>Analytics</span>
+            </Link>
+          </Button>
         </nav>
 
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="ml-auto flex items-center space-x-2">
           <ThemeToggle />
           <Button variant="outline" size="icon" asChild>
             <a

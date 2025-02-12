@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite --mode development",
     "dev:server": "cross-env NODE_ENV=development nodemon -r dotenv/config src/server/index.js dotenv_config_path=.env.development",
-    "build": "cross-env NODE_ENV=production vite build --mode production",
+    "build": "vite build --mode production",
     "start": "cross-env NODE_ENV=production node -r dotenv/config src/server/index.js dotenv_config_path=.env.production",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -56,7 +56,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "zod": "^3.24.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@shadcn/ui": "^0.0.4",

@@ -21,7 +21,7 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "files.exclude": {
     "**/.git": true,

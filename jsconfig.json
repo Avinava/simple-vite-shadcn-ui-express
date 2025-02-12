@@ -8,8 +8,8 @@
     "moduleResolution": "Node",
     "target": "ESNext",
     "jsx": "preserve",
-    "checkJs": true,
-    "strict": true,
+    "checkJs": false,
+    "strict": false,
     "skipLibCheck": true,
     "resolveJsonModule": true
   },

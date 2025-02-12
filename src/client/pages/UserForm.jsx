@@ -301,13 +301,13 @@ export function UserForm() {
                 )}
               />
 
-              <div className="flex space-x-8">
+              <div className="flex flex-col space-y-4">
                 <FormField
                   control={form.control}
                   name="isActive"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                      <div className="space-y-0.5">
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 shadow-sm">
+                      <div className="space-y-0.5 pr-8">
                         <FormLabel>Active Status</FormLabel>
                         <FormDescription>
                           Disable to temporarily deactivate this account
@@ -328,8 +328,8 @@ export function UserForm() {
                   control={form.control}
                   name="notifyByEmail"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                      <div className="space-y-0.5">
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 shadow-sm">
+                      <div className="space-y-0.5 pr-8">
                         <FormLabel>Email Notifications</FormLabel>
                         <FormDescription>
                           Receive notifications via email

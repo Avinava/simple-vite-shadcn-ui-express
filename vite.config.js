@@ -9,6 +9,10 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const PORT = parseInt(env.PORT || "3000", 10);
 
+  // Set NODE_ENV based on command and mode
+  const nodeEnv = mode === "production" ? "production" : "development";
+  process.env.NODE_ENV = nodeEnv;
+
   return {
     plugins: [react()],
     resolve: {
@@ -31,14 +35,14 @@ export default defineConfig(({ command, mode }) => {
               console.log(
                 "Sending Request to the Target:",
                 req.method,
-                req.url
+                req.url,
               );
             });
             proxy.on("proxyRes", (proxyRes, req, _res) => {
               console.log(
                 "Received Response from the Target:",
                 proxyRes.statusCode,
-                req.url
+                req.url,
               );
             });
           },
@@ -46,9 +50,10 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     define: {
+      // Set NODE_ENV based on mode
+      "process.env.NODE_ENV": JSON.stringify(nodeEnv),
       // Expose env variables to the client
       "process.env.VITE_API_URL": JSON.stringify(env.VITE_API_URL),
-      "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV),
     },
   };
 });

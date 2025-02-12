@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/client/*"]
     },
     "module": "ESNext",
     "moduleResolution": "Node",

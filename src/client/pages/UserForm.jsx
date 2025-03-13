@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Select,
   SelectContent,
@@ -199,10 +200,11 @@ export function UserForm() {
                     <FormItem>
                       <FormLabel>Birth Date</FormLabel>
                       <FormControl>
-                        <Input
-                          type="date"
+                        <DatePicker
+                          value={field.value}
+                          onChange={field.onChange}
                           disabled={form.formState.isSubmitting}
-                          {...field}
+                          className="w-full"
                         />
                       </FormControl>
                       <FormMessage />

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { userService } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
@@ -65,18 +65,27 @@ import {
 const chartConfig = {
   users: {
     label: "New Registrations",
-    theme: {
-      light: "hsl(var(--chart-1))",
-      dark: "hsl(var(--chart-1))",
-    },
+    color: "oklch(0.646 0.222 41.116)", // Using the chart-1 color from design system
+  },
+  weekly: {
+    label: "Weekly",
+    color: "oklch(0.488 0.243 264.376)", // Using the dark theme chart-1 color for better visibility
+  },
+  monthly: {
+    label: "Monthly",
+    color: "oklch(0.696 0.17 162.48)", // Using the dark theme chart-2 color for better visibility
   },
 };
 
 export function UserList() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") || "list";
+
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("list");
+  const [activeTab, setActiveTab] = useState(initialTab);
+  const [activeChart, setActiveChart] = useState("weekly");
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
     userId: null,
@@ -89,6 +98,15 @@ export function UserList() {
   useEffect(() => {
     loadUsers();
   }, []);
+
+  // Update URL when tab changes
+  useEffect(() => {
+    if (activeTab !== "list") {
+      setSearchParams({ tab: activeTab });
+    } else {
+      setSearchParams({});
+    }
+  }, [activeTab, setSearchParams]);
 
   const loadUsers = async () => {
     try {
@@ -128,27 +146,72 @@ export function UserList() {
   };
 
   // Prepare data for charts
-  const usersByMonth = users.reduce((acc, user) => {
-    const month = new Date(user.createdAt).toLocaleString("default", {
-      month: "short",
-    });
-    acc[month] = (acc[month] || 0) + 1;
-    return acc;
-  }, {});
+  const usersByTime = useMemo(() => {
+    // Group by weeks and months
+    return users.reduce(
+      (acc, user) => {
+        const date = new Date(user.createdAt);
 
-  const chartData = Object.entries(usersByMonth).map(([month, count]) => ({
-    month,
-    users: count,
-  }));
+        // Monthly grouping
+        const monthKey = date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+        });
 
-  const stats = {
-    total: users.length,
-    recent: users.filter((user) => {
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      return new Date(user.createdAt) > thirtyDaysAgo;
-    }).length,
-  };
+        // Weekly grouping - using ISO week
+        const weekStart = new Date(date);
+        weekStart.setDate(date.getDate() - date.getDay());
+        const weekKey = weekStart.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        });
+
+        // Update the accumulators
+        acc.weekly[weekKey] = (acc.weekly[weekKey] || 0) + 1;
+        acc.monthly[monthKey] = (acc.monthly[monthKey] || 0) + 1;
+
+        return acc;
+      },
+      { weekly: {}, monthly: {} }
+    );
+  }, [users]);
+
+  // Convert to chart format
+  const chartData = useMemo(() => {
+    const weekly = Object.entries(usersByTime.weekly).map(([date, count]) => ({
+      date,
+      weekly: count,
+    }));
+
+    const monthly = Object.entries(usersByTime.monthly).map(
+      ([date, count]) => ({
+        date,
+        monthly: count,
+      })
+    );
+
+    // Combine for display
+    return {
+      weekly,
+      monthly,
+      totals: {
+        weekly: weekly.reduce((acc, curr) => acc + curr.weekly, 0),
+        monthly: monthly.reduce((acc, curr) => acc + curr.monthly, 0),
+      },
+    };
+  }, [usersByTime]);
+
+  const stats = useMemo(
+    () => ({
+      total: users.length,
+      recent: users.filter((user) => {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        return new Date(user.createdAt) > thirtyDaysAgo;
+      }).length,
+    }),
+    [users]
+  );
 
   const filteredUsers = users.filter((user) => {
     if (filters.role !== "all" && user.role !== filters.role) return false;
@@ -172,7 +235,7 @@ export function UserList() {
   }
 
   return (
-    <div className="container max-w-6xl p-8">
+    <div className="mx-auto max-w-6xl p-8">
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
@@ -239,7 +302,7 @@ export function UserList() {
                       <p className="text-2xl font-bold">
                         {(
                           stats.total /
-                          Math.max(Object.keys(usersByMonth).length, 1)
+                          Math.max(Object.keys(usersByTime.monthly).length, 1)
                         ).toFixed(1)}
                       </p>
                     </div>
@@ -343,8 +406,8 @@ export function UserList() {
                               user.role === "ADMIN"
                                 ? "destructive"
                                 : user.role === "EDITOR"
-                                  ? "default"
-                                  : "secondary"
+                                ? "default"
+                                : "secondary"
                             }
                           >
                             {user.role.toLowerCase()}
@@ -352,7 +415,7 @@ export function UserList() {
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant={user.isActive ? "success" : "outline"}
+                            variant={user.isActive ? "outline" : "secondary"}
                           >
                             {user.isActive ? "active" : "inactive"}
                           </Badge>
@@ -383,54 +446,78 @@ export function UserList() {
 
             <TabsContent value="analytics">
               <Card>
-                <CardHeader>
-                  <CardTitle>User Growth</CardTitle>
-                  <CardDescription>
-                    Monthly user registration trends
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[350px] w-full">
-                    <ResponsiveContainer height="100%" width="100%">
-                      <BarChart data={chartData}>
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          vertical={false}
-                          className="stroke-muted"
-                        />
-                        <XAxis
-                          dataKey="month"
-                          stroke="#888888"
-                          fontSize={12}
-                          tickLine={false}
-                          axisLine={false}
-                        />
-                        <YAxis
-                          stroke="#888888"
-                          fontSize={12}
-                          tickLine={false}
-                          axisLine={false}
-                          tickFormatter={(value) => `${value}`}
-                          className="text-xs"
-                        />
-                        <Bar
-                          dataKey="users"
-                          fill="currentColor"
-                          radius={[4, 4, 0, 0]}
-                          className="fill-primary"
-                        />
-                        <ChartTooltip>
-                          <ChartTooltipContent
-                            labelFormatter={(label) => `${label} 2024`}
-                            formatter={(value) => [
-                              `${value} users`,
-                              "New Registrations",
-                            ]}
-                          />
-                        </ChartTooltip>
-                      </BarChart>
-                    </ResponsiveContainer>
+                <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+                  <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+                    <CardTitle>User Growth</CardTitle>
+                    <CardDescription>
+                      Registration trends over time
+                    </CardDescription>
                   </div>
+                  <div className="flex">
+                    {["weekly", "monthly"].map((key) => (
+                      <button
+                        key={key}
+                        data-active={activeChart === key}
+                        className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                        onClick={() => setActiveChart(key)}
+                      >
+                        <span className="text-xs text-muted-foreground">
+                          {chartConfig[key].label}
+                        </span>
+                        <span className="text-lg font-bold leading-none sm:text-3xl">
+                          {chartData.totals[key].toLocaleString()}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </CardHeader>
+                <CardContent className="px-2 sm:p-6">
+                  <ChartContainer
+                    config={chartConfig}
+                    className="aspect-auto h-[350px] w-full"
+                  >
+                    <BarChart
+                      accessibilityLayer
+                      data={chartData[activeChart]}
+                      margin={{
+                        top: 10,
+                        right: 20,
+                        left: 20,
+                        bottom: 20,
+                      }}
+                    >
+                      <CartesianGrid
+                        vertical={false}
+                        className="stroke-muted"
+                      />
+                      <XAxis
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        minTickGap={32}
+                      />
+                      <YAxis
+                        tickLine={false}
+                        axisLine={false}
+                        tickFormatter={(value) => `${value}`}
+                      />
+                      <ChartTooltip
+                        content={
+                          <ChartTooltipContent
+                            className="w-[150px]"
+                            nameKey="registrations"
+                            labelFormatter={(value) => `${value}`}
+                          />
+                        }
+                      />
+                      <Bar
+                        dataKey={activeChart}
+                        fill={`var(--color-${activeChart})`}
+                        radius={[4, 4, 0, 0]}
+                      />
+                    </BarChart>
+                  </ChartContainer>
                 </CardContent>
               </Card>
             </TabsContent>

@@ -1,6 +1,10 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { fileURLToPath } from "url";
+import tailwindcss from "@tailwindcss/vite";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -14,7 +18,7 @@ export default defineConfig(({ command, mode }) => {
   process.env.NODE_ENV = nodeEnv;
 
   return {
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src/client"),
@@ -35,14 +39,14 @@ export default defineConfig(({ command, mode }) => {
               console.log(
                 "Sending Request to the Target:",
                 req.method,
-                req.url,
+                req.url
               );
             });
             proxy.on("proxyRes", (proxyRes, req, _res) => {
               console.log(
                 "Received Response from the Target:",
                 proxyRes.statusCode,
-                req.url,
+                req.url
               );
             });
           },

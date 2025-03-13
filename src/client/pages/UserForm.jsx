@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Select,
   SelectContent,
@@ -54,7 +55,8 @@ const userSchema = z.object({
 export function UserForm() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id;
 
   const form = useForm({
     resolver: zodResolver(userSchema),
@@ -132,7 +134,7 @@ export function UserForm() {
   };
 
   return (
-    <div className="container max-w-6xl p-8">
+    <div className="mx-auto max-w-6xl p-8">
       <Card>
         <CardHeader>
           <CardTitle>{id ? "Edit User" : "Create User"}</CardTitle>
@@ -198,10 +200,11 @@ export function UserForm() {
                     <FormItem>
                       <FormLabel>Birth Date</FormLabel>
                       <FormControl>
-                        <Input
-                          type="date"
+                        <DatePicker
+                          value={field.value}
+                          onChange={field.onChange}
                           disabled={form.formState.isSubmitting}
-                          {...field}
+                          className="w-full"
                         />
                       </FormControl>
                       <FormMessage />

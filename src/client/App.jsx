@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Badge } from "./components/ui/badge";
 import {
   Card,
@@ -24,25 +24,20 @@ import {
 import { Button } from "./components/ui/button";
 import { Link } from "react-router-dom";
 
-function App() {
+// Layout component that includes common elements
+function Layout() {
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col bg-background">
-        <Header />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/users" element={<UserList />} />
-            <Route path="/users/new" element={<UserForm />} />
-            <Route path="/users/:id" element={<UserForm />} />
-          </Routes>
-        </main>
-        <Toaster />
-      </div>
-    </Router>
+    <div className="min-h-screen flex flex-col bg-background">
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Toaster />
+    </div>
   );
 }
 
+// Home page component
 function Home() {
   return (
     <div className="flex-1 space-y-12 py-8">
@@ -230,6 +225,25 @@ function Home() {
       </section>
     </div>
   );
+}
+
+// Create the router configuration
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "users", element: <UserList /> },
+      { path: "users/new", element: <UserForm /> },
+      { path: "users/:id", element: <UserForm /> },
+    ],
+  },
+]);
+
+// App component with RouterProvider
+function App() {
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -54,7 +54,8 @@ const userSchema = z.object({
 export function UserForm() {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id;
 
   const form = useForm({
     resolver: zodResolver(userSchema),

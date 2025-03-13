@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { userService } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
@@ -73,10 +73,13 @@ const chartConfig = {
 };
 
 export function UserList() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") || "list";
+
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("list");
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [deleteDialog, setDeleteDialog] = useState({
     isOpen: false,
     userId: null,
@@ -89,6 +92,15 @@ export function UserList() {
   useEffect(() => {
     loadUsers();
   }, []);
+
+  // Update URL when tab changes
+  useEffect(() => {
+    if (activeTab !== "list") {
+      setSearchParams({ tab: activeTab });
+    } else {
+      setSearchParams({});
+    }
+  }, [activeTab, setSearchParams]);
 
   const loadUsers = async () => {
     try {
@@ -343,17 +355,15 @@ export function UserList() {
                               user.role === "ADMIN"
                                 ? "destructive"
                                 : user.role === "EDITOR"
-                                  ? "default"
-                                  : "secondary"
+                                ? "default"
+                                : "secondary"
                             }
                           >
                             {user.role.toLowerCase()}
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge
-                            variant={user.isActive ? "success" : "outline"}
-                          >
+                          <Badge variant={user.isActive ? "outline" : "secondary"}>
                             {user.isActive ? "active" : "inactive"}
                           </Badge>
                         </TableCell>
@@ -391,45 +401,47 @@ export function UserList() {
                 </CardHeader>
                 <CardContent>
                   <div className="h-[350px] w-full">
-                    <ResponsiveContainer height="100%" width="100%">
-                      <BarChart data={chartData}>
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          vertical={false}
-                          className="stroke-muted"
-                        />
-                        <XAxis
-                          dataKey="month"
-                          stroke="#888888"
-                          fontSize={12}
-                          tickLine={false}
-                          axisLine={false}
-                        />
-                        <YAxis
-                          stroke="#888888"
-                          fontSize={12}
-                          tickLine={false}
-                          axisLine={false}
-                          tickFormatter={(value) => `${value}`}
-                          className="text-xs"
-                        />
-                        <Bar
-                          dataKey="users"
-                          fill="currentColor"
-                          radius={[4, 4, 0, 0]}
-                          className="fill-primary"
-                        />
-                        <ChartTooltip>
-                          <ChartTooltipContent
-                            labelFormatter={(label) => `${label} 2024`}
-                            formatter={(value) => [
-                              `${value} users`,
-                              "New Registrations",
-                            ]}
+                    <ChartContainer config={chartConfig}>
+                      <ResponsiveContainer>
+                        <BarChart data={chartData}>
+                          <CartesianGrid
+                            strokeDasharray="3 3"
+                            vertical={false}
+                            className="stroke-muted"
                           />
-                        </ChartTooltip>
-                      </BarChart>
-                    </ResponsiveContainer>
+                          <XAxis
+                            dataKey="month"
+                            stroke="#888888"
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                          />
+                          <YAxis
+                            stroke="#888888"
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                            tickFormatter={(value) => `${value}`}
+                            className="text-xs"
+                          />
+                          <Bar
+                            dataKey="users"
+                            fill="currentColor"
+                            radius={[4, 4, 0, 0]}
+                            className="fill-primary"
+                          />
+                          <ChartTooltip>
+                            <ChartTooltipContent
+                              labelFormatter={(label) => `${label} 2024`}
+                              formatter={(value) => [
+                                `${value} users`,
+                                "New Registrations",
+                              ]}
+                            />
+                          </ChartTooltip>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
                   </div>
                 </CardContent>
               </Card>

@@ -65,15 +65,15 @@ import {
 const chartConfig = {
   users: {
     label: "New Registrations",
-    color: "hsl(var(--chart-1))",
+    color: "oklch(0.646 0.222 41.116)", // Using the chart-1 color from design system
   },
   weekly: {
     label: "Weekly",
-    color: "hsl(var(--chart-1))",
+    color: "oklch(0.488 0.243 264.376)", // Using the dark theme chart-1 color for better visibility
   },
   monthly: {
     label: "Monthly",
-    color: "hsl(var(--chart-2))",
+    color: "oklch(0.696 0.17 162.48)", // Using the dark theme chart-2 color for better visibility
   },
 };
 

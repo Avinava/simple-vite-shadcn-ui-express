@@ -184,7 +184,7 @@ export function UserList() {
   }
 
   return (
-    <div className="container max-w-6xl p-8">
+    <div className="mx-auto max-w-6xl p-8">
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
@@ -363,7 +363,9 @@ export function UserList() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={user.isActive ? "outline" : "secondary"}>
+                          <Badge
+                            variant={user.isActive ? "outline" : "secondary"}
+                          >
                             {user.isActive ? "active" : "inactive"}
                           </Badge>
                         </TableCell>

@@ -133,7 +133,7 @@ export function UserForm() {
   };
 
   return (
-    <div className="container max-w-6xl p-8">
+    <div className="mx-auto max-w-6xl p-8">
       <Card>
         <CardHeader>
           <CardTitle>{id ? "Edit User" : "Create User"}</CardTitle>

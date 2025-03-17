@@ -10,14 +10,14 @@
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "vite --mode development",
     "dev:server": "cross-env NODE_ENV=development nodemon -r dotenv/config src/server/index.js dotenv_config_path=.env.development",
-    "build": "prisma generate && vite build --mode production",
+    "build": "cross-env NODE_ENV=production prisma generate && vite build --mode production",
     "start": "cross-env NODE_ENV=production node -r dotenv/config src/server/index.js dotenv_config_path=.env.production",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy",
-    "db:seed": "node prisma/seed.js",
-    "db:studio": "prisma studio",
+    "db:migrate": "npx dotenv-cli -e .env.development prisma migrate dev",
+    "db:deploy": "npx dotenv-cli -e .env.production prisma migrate deploy",
+    "db:seed": "npx dotenv-cli -e .env.development node prisma/seed.js",
+    "db:studio": "npx dotenv-cli -e .env.development prisma studio",
     "db:generate": "prisma generate"
   },
   "dependencies": {
@@ -79,6 +79,7 @@
     "nodemon": "^3.1.9",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.0.13",
-    "vite": "^6.2.1"
+    "vite": "^6.2.1",
+    "dotenv-cli": "^7.3.0"
   }
 }

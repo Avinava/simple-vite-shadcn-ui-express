@@ -65,7 +65,6 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@shadcn/ui": "^0.0.4",
     "@tailwindcss/vite": "^4.0.13",
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
